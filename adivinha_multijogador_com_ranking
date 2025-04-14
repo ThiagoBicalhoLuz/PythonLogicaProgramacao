@@ -1,0 +1,41 @@
+
+# Jogo: Adivinha o Número (Versão com Múltiplos Jogadores)
+import random
+
+# Pede o número de jogadores
+num_jogadores = int(input("Quantos jogadores vão jogar? "))
+
+# Cria uma lista com os nomes dos jogadores (Jogador 1, Jogador 2, etc.)
+jogadores = [f"Jogador {i+1}" for i in range(num_jogadores)]
+
+# Cria um dicionário para registrar o número de tentativas de cada jogador
+ranking = {}
+
+# Cada jogador joga uma vez
+for jogador in jogadores:
+    print(f"\n{jogador}, é a sua vez!")
+    numero_secreto = random.randint(1, 10)  # Gera um número novo para cada jogador
+    tentativas = 0
+
+    while True:
+        try:
+            chute = int(input(f"{jogador}, seu palpite: "))
+            tentativas += 1
+
+            if chute == numero_secreto:
+                print(f"Parabéns, {jogador}! Você acertou em {tentativas} tentativas.")
+                ranking[jogador] = tentativas  # Salva no ranking
+                break
+            elif chute < numero_secreto:
+                print("Dica: O número é maior.")
+            else:
+                print("Dica: O número é menor.")
+        except ValueError:
+            print("Por favor, digite um número válido.")
+
+# Mostra o ranking final, ordenado do menor para o maior número de tentativas
+print("\n🏆 Ranking Final:")
+ranking_ordenado = sorted(ranking.items(), key=lambda item: item[1])  # Ordena pelo número de tentativas
+
+for posicao, (jogador, tentativas) in enumerate(ranking_ordenado, start=1):
+    print(f"{posicao}º lugar: {jogador} - {tentativas} tentativas")
